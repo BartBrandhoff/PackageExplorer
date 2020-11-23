@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!--{% for key in dict.keys()%}-->
+<!--{% set value=dict.get(key)%}-->
+<!--<h1>Key: {{key}}</h1>-->
+<!--    {% for key_in in value.keys()%}-->
+<!--        {% set value_in=dict.get(key_in)%}-->
+<!--        <h1>Key: {{key_in}}</h1>-->
+<!--        <h2>Value: {{value_in}}</h2>-->
+<!--    {% endfor %}-->
+<!--{% endfor %}-->
+{% for key,parent_dict_item in dict.items() %}
+    <li>{{key}}</li>
+    {% for key2, nested_value in parent_dict_item.items() %}
+        <ul>{{key2}}::
+        <%if key2 = 'Depends'%>
+            Open link Url:
+        <% endif %>
+        {{ nested_value }}</ul>
+    {% endfor %}
+{% endfor %}
+</body>
+</html>
