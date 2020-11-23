@@ -1,14 +1,10 @@
 # !flask/bin/python
 from flask import Flask, jsonify, request, render_template
-from ReadFile import *
+from readFile import *
 from werkzeug.exceptions import HTTPException, InternalServerError, abort
 from flask import json
 
 app = Flask(__name__)
-
-
-def index():
-    return "Hello, World!"
 
 
 @app.errorhandler(HTTPException)
@@ -35,13 +31,14 @@ def handle_500(e):
         return render_template("500.html"), 500
 
     # wrapped unhandled error
-    return render_template("500_unhandled.html", e=original), 500
+    return render_template("500.html", e=original), 500
 
 
 @app.errorhandler(404)
 def resource_not_found(e):
-    return jsonify(error=str(e)), 404
+    return render_template("404.html"), 404
 
+#api for home directory showing all packages
 @app.route('/api/home/', methods=['GET'])
 def home():
     try:
@@ -53,11 +50,11 @@ def home():
         abort(404, description="Resource not found")
 
 
-# @app.route('/api/packageList/<package_name>', methods=['GET'])
+# api for a specific package
 @app.route('/api/package-list')
 def fetch_package_list(package_name='Anonymous'):
     try:
-        package_name = request.args.get('package_name', default = '', type = str)
+        package_name = request.args.get('package_name', default='', type=str)
         response = package_list(package_name)
         if response is None:
             abort(404, description="Resource not found")

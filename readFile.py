@@ -1,4 +1,3 @@
-from hyperlink import URL
 from furl import furl
 
 
@@ -11,13 +10,16 @@ def package_list(package_name: object = None) -> object:
 
     file_name = open("status", "r", encoding="utf8")
     main_dict = {}
+    #iterate through file and separate packages
     for item in file_name.read().split('\n\n'):
         key, value = '', ''
         commands = {}
         x = 0
         dict_key = ''
+        #iterate through each package
         for row in item.split('\n'):
             if not row == '':
+                #find Package Name
                 if x == 0:
                     dict_key = row.split(':', 1)[1].strip()
                     x += 1
@@ -57,6 +59,7 @@ def package_list(package_name: object = None) -> object:
                     url_dict[package] = url
         main_dict[package_name]['InverseDependency'] = url_dict
 
+    #add urls to dependecies
     for package in main_dict:
         url_dict = {}
         for depends in main_dict[package]['Depends']:
@@ -74,24 +77,3 @@ def package_list(package_name: object = None) -> object:
     if package_name is not None:
         main_dict = {package_name: main_dict[package_name]}
     return main_dict
-
-
-# main_dict = Traverse.package_list('libws-commons-util-java')
-# print(Traverse.package_list('libws-commons-util-java'))
-# tel={'jack': 4098, 'sape': 4139, 'guido': 4127}
-# print(tel['jack'])
-
-# for di in main_dict:
-#      print(di, main_dict[di])
-url_text = 'http://127.0.0.1:5000/api/package-list?package-name=tcpd'
-urls = ''
-url = furl(url_text)
-url.set({"package_name": "tcpd"})
-url.url
-url_text = 'http://127.0.0.1:5000/api/package-list?package-name=tcpd'
-url2 = furl(url_text)
-url2.set({"package_name": "tcpd"})
-url2.url
-
-print(url)
-# print(url.replace(path=u'http://github.com/python-hyper/'))

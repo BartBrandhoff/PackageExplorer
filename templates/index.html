@@ -2,27 +2,56 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Package Explorer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/4.3.1/css/bootstrap.min.css') }}">
+    <style>
+
+    </style>
 </head>
+
 <body>
-<!--{% for key in dict.keys()%}-->
-<!--{% set value=dict.get(key)%}-->
-<!--<h1>Key: {{key}}</h1>-->
-<!--    {% for key_in in value.keys()%}-->
-<!--        {% set value_in=dict.get(key_in)%}-->
-<!--        <h1>Key: {{key_in}}</h1>-->
-<!--        <h2>Value: {{value_in}}</h2>-->
-<!--    {% endfor %}-->
-<!--{% endfor %}-->
-{% for key,parent_dict_item in dict.items() %}
-    <li>{{key}}</li>
-    {% for key2, nested_value in parent_dict_item.items() %}
-        <ul>{{key2}}::
-        <%if key2 = 'Depends'%>
-            Open link Url:
-        <% endif %>
-        {{ nested_value }}</ul>
-    {% endfor %}
-{% endfor %}
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item active">
+                <a class="nav-link" href="http://127.0.0.1:5000/api/home/">Home <span class="sr-only">(current)</span></a>
+            </li>
+        </ul>
+    </div>
+</nav>
+{% block content %}
+{% endblock %}
+
+                {% for key,parent_dict_item in dict.items() %}
+                <div class="container ">
+                    <div class="col-sm-15">
+                        <div class="well">
+                            <div class="header">
+                             <ul><h4>{{key}}</h4></ul>
+                            </div>
+                            <div class="mainbody">
+                            {% for key2, nested_value in parent_dict_item.items() %}
+                                <ul>{{key2}}::
+                                {%if key2 =='Depends' or key2 =='InverseDependency'%}
+                                    {% for dependency,link in nested_value.items() %}
+                                    <a href="{{link}}"><span class="label info"> {{dependency}}</span></a>
+                                    {% endfor %}
+                                    </ul>
+                                {% else %}
+                                    {{ nested_value }}</ul>
+                                {% endif %}
+
+                            {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+
+
+</body>
+</html>
 </body>
 </html>
